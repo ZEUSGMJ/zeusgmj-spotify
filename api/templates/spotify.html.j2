@@ -1,0 +1,143 @@
+<svg width="640" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <foreignObject width="640" height="200">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="container">
+            <style>
+
+                .main {
+                    margin-top: 40px;
+                    display: flex;
+                }
+
+                .currentStatus {
+                    float: left;
+                    font-size: 24px;
+                    position: static;
+                    margin-top: -5px;
+                    margin-left: 12px;
+                    color: #777
+                }
+                
+                .container {
+                    border-radius: 5px;
+                    padding: 10px 10px 10px 0px;
+                }
+
+                .art {
+                    width: 28%;
+                    float: left;
+                    margin-left: -5px;
+                }
+
+                .content {
+                    width: 71%;
+                    line-height: 1.25;
+                }
+
+                .song {
+                    color: #666;
+                    overflow:hidden;
+                    margin-top: -5px;
+                    font-size: 24px;
+                    text-align: left;
+                    padding-left: 12px;
+                    white-space:nowrap;
+                    text-overflow:ellipsis;
+                    font-weight: bold;
+                }
+
+                .artist {
+                    color: #b3b3b3;
+                    font-size: 20px;
+                    margin-top: 4px;
+                    padding-left: 12px;
+                    text-align: left;
+                    margin-bottom: 5px
+                }
+
+                .album {
+                    color: #666;
+                    font-size: 20px;
+                    padding-left: 12px;
+                    text-overflow:ellipsis;
+                    font-weight: bold;
+                }
+
+                .cover {
+                    width: 144px;
+                    height: 144px;
+                    border-radius: 12%;
+                    padding: 0 10px;
+                    margin: 0 5px;
+                }
+
+                #bars {
+                    width: 50px;
+                    height: 30px;
+                    bottom: 8px;
+                    position: absolute;
+                    margin: -20px 0 0 12px;
+                }
+
+                .bar {
+                    width: 3px;
+                    bottom: 1px;
+                    height: 3px;
+                    position: absolute;
+                    background: #1DB954cc;
+                    animation: sound 0ms -800ms linear infinite alternate;
+                }
+                
+                div {
+                    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+                }
+                
+                @keyframes sound {
+                    0% {
+                        height: 2px;
+                        opacity: 0.25;
+                    }
+
+                    25% {
+                        height: 8px;
+                        opacity: 0.45;
+                    }
+
+                    50% {
+                        height: 18px;
+                        opacity: 0.65;
+                    }
+
+                    75% {
+                        height: 24px;
+                        opacity: 0.85;
+                    }
+
+                    100% {
+                        height: 30px;
+                        opacity: 1;
+                    }
+                }
+
+                {{barCSS|safe}}
+            </style>
+
+            <div class="currentStatus">{{status}}</div>
+
+            <div class="main">
+                <a class="art" href="{}" target="_blank">
+                    <center>
+                        <img src="data:image/png;base64, {{image}}" class="cover" />
+                    </center>
+                </a>
+
+                <div class="content">
+                    <div class="song">{{songName}}</div>
+                    <div class="artist">{{artistName}}</div>
+                    <div class="album">{{albumName}}</div>
+                    <div id="bars">{{contentBar|safe}}</div>
+                </div>
+            </div>
+
+        </div>
+    </foreignObject>
+</svg>
