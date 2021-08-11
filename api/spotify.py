@@ -124,7 +124,7 @@ def makeSVG(data):
         artists.append(i["name"])
     
     if len(artists) >= 2:
-        artists.insert(-1, '&amp;')
+        artists.insert(-1, '&')
 
     artistName = ', '.join(artists[:-2]) + ' ' + ' '.join(artists[-2:])
     songName = item["name"].replace("&", "&amp;")
