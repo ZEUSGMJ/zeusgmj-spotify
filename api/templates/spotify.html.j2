@@ -4,8 +4,13 @@
             <style>
 
                 .main {
-                    margin-top: 40px;
+                    /* margin-top: 10px; */
                     display: flex;
+                }
+
+                .card {
+                    flex-direction: column;
+                    gap: 10px;
                 }
 
                 .currentStatus {
@@ -22,6 +27,14 @@
                     padding: 10px 10px 10px 0px;
                 }
 
+                .flex {
+                    display: flex;
+                }
+
+                .song-info {
+                    flex-direction: column;
+                }
+
                 .art {
                     width: 28%;
                     float: left;
@@ -29,8 +42,7 @@
                 }
 
                 .content {
-                    width: 71%;
-                    line-height: 1.25;
+                    width: 70%;
                 }
 
                 .song {
@@ -49,12 +61,10 @@
                     color: #b3b3b3;
                     overflow: hidden;
                     font-size: 20px;
-                    margin-top: 4px;
                     padding-left: 12px;
                     text-align: left;
                     white-space:nowrap;
                     text-overflow:ellipsis;
-                    margin-bottom: 5px
                 }
 
                 .album {
@@ -70,9 +80,8 @@
                 .cover {
                     width: 144px;
                     height: 144px;
-                    border-radius: 24px;
-                    padding: 0 10px;
-                    margin: 0 5px;
+                    border-radius: 4px;
+                    box-shadow: 0px 0px 2px 2px rgba(102,102,102,0.75);
                 }
 
                 #bars {
@@ -126,20 +135,24 @@
                 {{barCSS|safe}}
             </style>
 
-            <div class="currentStatus">{{status}}</div>
+            <div class="card flex">
+                <div class="currentStatus">{{status}}</div>
 
-            <div class="main">
-                <a class="art" href="{}" target="_blank">
-                    <center>
-                        <img src="data:image/png;base64, {{image}}" class="cover" />
-                    </center>
-                </a>
+                <div class="main">
+                    <a class="art" href="{{songURL}}" target="_blank">
+                        <center>
+                            <img src="data:image/png;base64,{{image}}" class="cover" />
+                        </center>
+                    </a>
 
-                <div class="content">
-                    <div class="song">{{songName}}</div>
-                    <div class="artist">{{artistName}}</div>
-                    <div class="album">{{albumName}}</div>
-                    <div id="bars">{{contentBar|safe}}</div>
+                    <div class="content">
+                        <div class = "song-info flex">
+                            <div class="song">{{songName}}</div>
+                            <div class="artist">{{artistName}}</div>
+                            <div class="album">{{albumName}}</div>
+                        </div>
+                        <div id="bars">{{contentBar|safe}}</div>
+                    </div>
                 </div>
             </div>
 
