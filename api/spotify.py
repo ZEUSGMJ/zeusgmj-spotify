@@ -112,7 +112,7 @@ def makeSVG(data):
         item = recentPlays["items"][itemIndex]["track"]
     else:
         item = data["item"]
-        currentStatus = "Listening to:" if item["is_local"] == False else 'Listening to a Local File:'
+        currentStatus = "Listening to:" if item["is_local"] == False else 'Listening to a local file:'
     if item["album"]["images"] == [] or item["is_local"] == True:
         image = PLACEHOLDER_IMAGE
     else :
