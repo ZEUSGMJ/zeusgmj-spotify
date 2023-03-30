@@ -97,7 +97,7 @@
                     bottom: 1px;
                     height: 3px;
                     position: absolute;
-                    background: #1DB954cc;
+                    background: {{barColor}};
                     animation: sound 0ms -800ms linear infinite alternate;
                 }
                 
@@ -129,6 +129,23 @@
                     100% {
                         height: 30px;
                         opacity: 1;
+                    }
+                }
+
+                @keyframes rotating {
+                    from {
+                        -ms-transform: rotate(0deg);
+                        -moz-transform: rotate(0deg);
+                        -webkit-transform: rotate(0deg);
+                        -o-transform: rotate(0deg);
+                        transform: rotate(0deg);
+                    }
+                    to {
+                        -ms-transform: rotate(360deg);
+                        -moz-transform: rotate(360deg);
+                        -webkit-transform: rotate(360deg);
+                        -o-transform: rotate(360deg);
+                        transform: rotate(360deg);
                     }
                 }
 

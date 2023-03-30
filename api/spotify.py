@@ -6,7 +6,7 @@ import re
 
 from base64 import b64encode
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask, Response, jsonify, render_template, templating
+from flask import Flask, Response, jsonify, render_template, templating, request
 
 load_dotenv(find_dotenv())
 
@@ -14,9 +14,12 @@ load_dotenv(find_dotenv())
 #   user-read-currently-playing
 #   user-read-recently-played
 PLACEHOLDER_IMAGE = "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"
-SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
-SPOTIFY_SECRET_ID = os.getenv("SPOTIFY_SECRET_ID")
-SPOTIFY_REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN")
+# SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+# SPOTIFY_SECRET_ID = os.getenv("SPOTIFY_SECRET_ID")
+# SPOTIFY_REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN")
+SPOTIFY_CLIENT_ID = '3dc4169849874a3fa5ed1eee8d58295f'#os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_SECRET_ID = 'e3e984bb34004100997b860688f1e38e'#os.getenv("SPOTIFY_SECRET_ID")
+SPOTIFY_REFRESH_TOKEN = 'AQBlu5wb_xyQ58Jk5slEriO5_8W4udpR_lv4CPtM7DjNO9S6qVYf5m2E1K_rereE6L-RDc43wa3hqzoa3gI3KybCXLHazKRlQmNPTaFF5mdPH45zV_zf2dIbq75WL-KDXdM'#os.getenv("SPOTIFY_REFRESH_TOKEN")
 
 FALLBACK_THEME = "spotify.html.j2"
 
@@ -33,7 +36,6 @@ def getAuth():
     return b64encode(f"{SPOTIFY_CLIENT_ID}:{SPOTIFY_SECRET_ID}".encode()).decode(
         "ascii"
     )
-
 
 def refreshToken():
     data = {
@@ -84,21 +86,44 @@ def barGen(barCount):
         left += 4
     return barCSS
 
-def getTemplate():
+def getTemplate(theme):
     try:
         file = open("api/templates.json","r")
         templates = json.loads(file.read())
-        return templates["templates"][templates["current-theme"]]
+        return templates["templates"][theme]
     except Exception as e:
-        print(f"Failed to load templates.")
+        print(f"Failed to load templates.{e}")
         return FALLBACK_THEME
 
 
 def loadImageB64(url):
     resposne = requests.get(url)
     return b64encode(resposne.content).decode("ascii")
+    
+def checkTheme(theme):
+    file = open("api/templates.json","r")
+    templates = json.loads(file.read())
+    cardTheme = templates["templates"].get(theme)
 
-def makeSVG(data):
+    if cardTheme != None:
+        return True
+    else:
+        return False
+
+def isValidHex(str):
+    regex = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    p = re.compile(regex)
+
+    if(str == None):
+        return False
+
+    if(re.search(p, str)):
+        return True
+    else:
+        return False
+
+def makeSVG(data, queryData):
+    
     barCount = 105
     contentBar = "".join(["<div class='bar'></div>" for i in range(barCount)])
     barCSS = barGen(barCount)
@@ -136,6 +161,9 @@ def makeSVG(data):
 
     artistName = re.sub("&", "&amp;", artistName)
 
+    theme = queryData["theme"]
+    barColor = f'#{queryData["barColor"]}'
+
     dataDict = {
         "contentBar": contentBar,
         "barCSS": barCSS,
@@ -145,16 +173,51 @@ def makeSVG(data):
         "status": currentStatus,
         "albumName": albumName,
         "songURL": songUrl,
+        "barColor": barColor,
     }
 
-    return render_template(getTemplate(), **dataDict)
+    return render_template(getTemplate(theme), **dataDict)
 
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def catch_all(path):
+    args = request.args
+
+    queryDict = {
+        "barColor": args.get('barColor') or '1DB954',
+        "theme": args.get('theme') or 'light',
+        "rotate": args.get('rotate')
+    }
+
+    validTheme = checkTheme(queryDict["theme"])
+    validHex = isValidHex(f'#{queryDict["barColor"]}')
+    
+    if validTheme == False:
+        errorDict = {
+            'errorMsg': "Choose <code>light</code> or <code>dark</code>",
+            'errorTitle': f'theme <code>{queryDict["theme"]}</code>'
+        }
+        errorPage = render_template('error.html.j2', **errorDict)
+        Errorresp = Response(errorPage, mimetype="image/svg+xml")
+        Errorresp.headers["Cache-Control"] = "s-maxage=1"
+
+        return Errorresp
+
+    if validHex == False:
+        errorDict = {
+            'errorMsg': "Please pass a valid <strong>Hex Color code</strong>",
+            'errorTitle': f'Hex Color <code>{queryDict["barColor"]}</code>'
+        }
+        errorPage = render_template('error.html.j2', **errorDict)
+        Errorresp = Response(errorPage, mimetype="image/svg+xml")
+        Errorresp.headers["Cache-Control"] = "s-maxage=1"
+
+        return Errorresp
+
+
     data = nowPlaying()
-    svg = makeSVG(data)
+    svg = makeSVG(data, queryDict)
 
     resp = Response(svg, mimetype="image/svg+xml")
     resp.headers["Cache-Control"] = "s-maxage=1"
